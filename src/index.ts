@@ -1,5 +1,10 @@
-import { readInput } from "./lib/readInput";
+import { prepareInput } from './lib/prepareInput';
+import { readInput } from './lib/readInput';
 
-readInput().then(res => console.log(JSON.stringify(res, null, 2)));
+readInput()
+  .then(prepareInput)
+  .then(EUs => {
+    // todo: actual logic here
+  });
 
 export {};

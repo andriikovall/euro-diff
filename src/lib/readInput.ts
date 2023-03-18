@@ -1,5 +1,4 @@
 import readline from 'readline';
-import { Input } from '../types';
 import {
   MAX_COUNTRY_NAME_LENGTH,
   MAX_NUMBER_OF_COUNTRIES,
@@ -9,6 +8,11 @@ import {
   MIN_X_COORDINATE,
   MIN_Y_COORDINATE,
 } from '../config';
+import { Country } from '../types';
+
+export type Input = {
+  countries: Omit<Country, 'cities'>[];
+}[];
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -32,13 +36,14 @@ const parseInput = (lines: string[]): Input => {
   const input: Input = [];
   let linesIndex = 0;
   while (true) {
-    const numberOfCountries = Number(lines[linesIndex]);
+      const numberOfCountries = Number(lines[linesIndex]);
+      console.log('numberOfCountries:', numberOfCountries);
     if (numberOfCountries > MAX_NUMBER_OF_COUNTRIES) {
       throw new Error(
         `Invalid number of countries: ${numberOfCountries}. Max is ${MAX_NUMBER_OF_COUNTRIES}`,
       );
     }
-    if (numberOfCountries <= MIN_NUMBER_OF_COUNTRIES) {
+    if (numberOfCountries < MIN_NUMBER_OF_COUNTRIES) {
       break;
     }
     linesIndex++;
@@ -58,7 +63,8 @@ const parseInput = (lines: string[]): Input => {
       if (
         [xlParsed, xhParsed].some(
           x => x < MIN_X_COORDINATE || x > MAX_X_COORDINATE,
-        )
+        ) ||
+        xlParsed > xhParsed
       ) {
         throw new Error(
           `Invalid x coordinate: ${xlParsed} or ${xhParsed}. Min is ${MIN_X_COORDINATE} and max is ${MAX_X_COORDINATE}`,
@@ -66,7 +72,9 @@ const parseInput = (lines: string[]): Input => {
       }
       if (
         [ylParsed, yhParsed].some(
-            y => y < MIN_Y_COORDINATE || y > MAX_Y_COORDINATE,
+          y => y < MIN_Y_COORDINATE || y > MAX_Y_COORDINATE,
+        ) ||
+        ylParsed > yhParsed
       ) {
         throw new Error(
           `Invalid y coordinate: ${ylParsed} or ${yhParsed}. Min is ${MIN_Y_COORDINATE} and max is ${MAX_Y_COORDINATE}`,
@@ -82,6 +90,7 @@ const parseInput = (lines: string[]): Input => {
     }
     input.push({ countries });
   }
+  console.log('input:', input);
   return input;
 };
 

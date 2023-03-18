@@ -1,11 +1,11 @@
-export type Coin = {
-  motifCountryName: string;
+export type Coins = {
+  count: Record<string /**name of country */, number>;
 };
 
 export type City = {
   x: number;
   y: number;
-  coins: Coin[];
+  coins: Coins;
 };
 
 export type Country = {
@@ -16,7 +16,3 @@ export type Country = {
   yh: number;
   cities: City[];
 };
-
-export type Input = {
-  countries: Omit<Country, 'cities'>[];
-}[];
