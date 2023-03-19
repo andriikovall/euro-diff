@@ -11,7 +11,7 @@ import {
 import { Country } from '../types';
 
 export type Input = {
-  countries: Omit<Country, 'cities'>[];
+  countries: Country[];
 }[];
 
 const rl = readline.createInterface({
@@ -36,8 +36,7 @@ const parseInput = (lines: string[]): Input => {
   const input: Input = [];
   let linesIndex = 0;
   while (true) {
-      const numberOfCountries = Number(lines[linesIndex]);
-      console.log('numberOfCountries:', numberOfCountries);
+    const numberOfCountries = Number(lines[linesIndex]);
     if (numberOfCountries > MAX_NUMBER_OF_COUNTRIES) {
       throw new Error(
         `Invalid number of countries: ${numberOfCountries}. Max is ${MAX_NUMBER_OF_COUNTRIES}`,
@@ -90,7 +89,6 @@ const parseInput = (lines: string[]): Input => {
     }
     input.push({ countries });
   }
-  console.log('input:', input);
   return input;
 };
 

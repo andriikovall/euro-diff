@@ -6,6 +6,7 @@ export type City = {
   x: number;
   y: number;
   coins: Coins;
+  country: string;
 };
 
 export type Country = {
@@ -14,5 +15,4 @@ export type Country = {
   yl: number;
   xh: number;
   yh: number;
-  cities: City[];
 };
