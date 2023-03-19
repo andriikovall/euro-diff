@@ -4,7 +4,7 @@ import { areAllCountriesFinished } from './areAllCountriesFinished';
 import { getNeighbors } from './getNeighbors';
 import { sendCoinsToNeighbors } from './sendCoinsToNeighbors';
 import { updateCitiesReceivedCoins } from './updateCitiesReceivedCoins';
-import { updateCompletionsDays } from './updateCompletionsDays';
+import { getUpdatedCountries } from './getUpdatedCountries';
 
 export type CountryWithCompletionDays = Country & { days: number };
 
@@ -34,7 +34,7 @@ export const euroDiffusion = (eu: EU): EuroDiffusionResult => {
         sendCoinsToNeighbors(city, neighbors);
       }
     }
-    result.countries = updateCompletionsDays(result, eu, days);
+    result.countries = getUpdatedCountries(result, eu, days);
     days++;
     updateCitiesReceivedCoins(eu);
     done = areAllCountriesFinished(result);

@@ -5,7 +5,7 @@ import {
 } from './euroDiffusion';
 import { isCountryCompleted } from './isCountryCompleted';
 
-export const updateCompletionsDays = (
+export const getUpdatedCountries = (
   result: EuroDiffusionResult,
   eu: EU,
   days: number,
