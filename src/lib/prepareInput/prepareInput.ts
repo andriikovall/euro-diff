@@ -5,6 +5,7 @@ import {
 } from '../../config';
 import { City, Country } from '../../types';
 import { Input } from '../readInput/readInput';
+import { createMatrix } from '../../utils/createMatrix';
 
 export type EU = {
   matrix: City[][];
@@ -13,23 +14,21 @@ export type EU = {
 
 export const prepareInput = (input: Input): EU[] => {
   const EUs: EU[] = input.map(({ countries }) => {
-    const matrix: City[][] = new Array(MAX_X_COORDINATE + 1)
-      .fill(null)
-      .map((_valX, x) =>
-        new Array(MAX_Y_COORDINATE + 1).fill(null).map((_valY, y) => {
-          return {
-            x,
-            y,
-            coins: {
-              count: {},
-            },
-            coinsToReceive: {
-              count: {},
-            },
-            country: '',
-          };
-        }),
-      );
+    const matrix = createMatrix<City>(
+      MAX_X_COORDINATE + 1,
+      MAX_Y_COORDINATE + 1,
+      (x, y) => ({
+        x,
+        y,
+        coins: {
+          count: {},
+        },
+        coinsToReceive: {
+          count: {},
+        },
+        country: '',
+      }),
+    );
     countries.forEach(country => {
       for (let x = country.xl; x <= country.xh; x++) {
         for (let y = country.yl; y <= country.yh; y++) {
