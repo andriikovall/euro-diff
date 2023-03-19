@@ -23,9 +23,13 @@ export const prepareInput = (input: Input): EU[] => {
             coins: {
               count: {},
             },
+            coinsToReceive: {
+              count: {},
+            },
             country: '',
-          }
-        }));
+          };
+        }),
+      );
     countries.forEach(country => {
       for (let x = country.xl; x <= country.xh; x++) {
         for (let y = country.yl; y <= country.yh; y++) {

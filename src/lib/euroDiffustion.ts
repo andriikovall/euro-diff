@@ -49,14 +49,14 @@ export const euroDiffusion = (eu: EU): EuroDiffusionResult => {
             continue;
           }
           neighbours.forEach(neighbour => {
-            neighbour.coins.count[motif] =
-              (neighbour.coins.count[motif] || 0) + coinsRepresentativePortion;
+            neighbour.coinsToReceive.count[motif] =
+              (neighbour.coinsToReceive.count[motif] || 0) +
+              coinsRepresentativePortion;
             city.coins.count[motif] -= coinsRepresentativePortion;
           });
         }
       }
     }
-    days++;
     for (const country of eu.countries) {
       const countryCities: City[] = [];
       for (let x = country.xl; x <= country.xh; x++) {
@@ -74,7 +74,18 @@ export const euroDiffusion = (eu: EU): EuroDiffusionResult => {
         countryResult.days = countryResult.days || days;
       }
     }
+    days++;
     done = Object.values(completionMap).every(Boolean);
+    for (const row of eu.matrix) {
+      for (const city of row) {
+        for (const motif of Object.keys(city.coinsToReceive.count)) {
+          city.coins.count[motif] =
+            (city.coins.count[motif] || 0) +
+            (city.coinsToReceive.count[motif] || 0);
+        }
+        city.coinsToReceive = { count: {} };
+      }
+    }
   } while (!done);
 
   return result;

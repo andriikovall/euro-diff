@@ -6,6 +6,7 @@ export type City = {
   x: number;
   y: number;
   coins: Coins;
+  coinsToReceive: Coins;
   country: string;
 };
 
