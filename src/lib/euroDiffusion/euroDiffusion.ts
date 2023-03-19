@@ -1,11 +1,15 @@
-import { City, Country } from '../../types';
-import { safeGetNumber } from '../../utils';
+import { Country } from '../../types';
 import { EU } from '../prepareInput';
+import { areAllCountriesFinished } from './areAllCountriesFinished';
 import { getNeighbors } from './getNeighbors';
-import { isCountryCompleted } from './isCountryCompleted';
+import { sendCoinsToNeighbors } from './sendCoinsToNeighbors';
+import { updateCitiesReceivedCoins } from './updateCitiesReceivedCoins';
+import { updateCompletionsDays } from './updateCompletionsDays';
+
+export type CountryWithCompletionDays = Country & { days: number };
 
 export type EuroDiffusionResult = {
-  countries: (Country & { days: number })[];
+  countries: CountryWithCompletionDays[];
 };
 
 export const euroDiffusion = (eu: EU): EuroDiffusionResult => {
@@ -23,51 +27,17 @@ export const euroDiffusion = (eu: EU): EuroDiffusionResult => {
       const row = eu.matrix[i];
       for (let j = 0; j < row.length; j++) {
         const city = row[j];
-        const cityCoinsCountries = Object.keys(city.coins.count);
-        if (!city.country || cityCoinsCountries.length === 0) {
+        if (!city.country) {
           continue;
         }
         const neighbors = getNeighbors(eu, i, j);
-
-        for (const motif of cityCoinsCountries) {
-          const coinsRepresentativePortion = Math.floor(
-            city.coins.count[motif] / 1000,
-          );
-          if (coinsRepresentativePortion <= 0) {
-            continue;
-          }
-          neighbors.forEach(neighbour => {
-            neighbour.coinsToReceive.count[motif] =
-              safeGetNumber(neighbour.coinsToReceive.count[motif]) +
-              coinsRepresentativePortion;
-            city.coins.count[motif] -= coinsRepresentativePortion;
-          });
-        }
+        sendCoinsToNeighbors(city, neighbors);
       }
     }
-    result.countries = result.countries.map(c => {
-      if (isCountryCompleted(c, eu)) {
-        return {
-          ...c,
-          days: c.days > -1 ? c.days : days,
-        };
-      }
-      return c;
-    });
-
+    result.countries = updateCompletionsDays(result, eu, days);
     days++;
-    done = result.countries.every(c => c.days >= 0);
-
-    for (const row of eu.matrix) {
-      for (const city of row) {
-        for (const motif of Object.keys(city.coinsToReceive.count)) {
-          city.coins.count[motif] =
-            safeGetNumber(city.coins.count[motif]) +
-            safeGetNumber(city.coinsToReceive.count[motif]);
-        }
-        city.coinsToReceive = { count: {} };
-      }
-    }
+    updateCitiesReceivedCoins(eu);
+    done = areAllCountriesFinished(result);
   } while (!done);
 
   return result;
