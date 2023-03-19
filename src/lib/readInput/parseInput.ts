@@ -7,6 +7,7 @@ import {
   MIN_X_COORDINATE,
   MIN_Y_COORDINATE,
 } from '../../config';
+import { Country } from '../../types';
 import { Input } from './readInput';
 
 export const parseInput = (lines: string[]): Input => {
@@ -23,7 +24,7 @@ export const parseInput = (lines: string[]): Input => {
       break;
     }
     linesIndex++;
-    const countries: Input[0]['countries'] = [];
+    const countries: Country[] = [];
     for (let i = 0; i < numberOfCountries; i++) {
       const [name, xl, yl, xh, yh] = lines[linesIndex].split(' ');
       if (name.length > MAX_COUNTRY_NAME_LENGTH) {
