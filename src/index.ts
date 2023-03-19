@@ -1,3 +1,4 @@
+import { prepareOutput } from './lib/prepareOutput';
 // import { prepareInput } from './lib/prepareInput';
 // import { readInput } from './lib/readInput';
 
@@ -23,14 +24,8 @@ import { readInput } from './lib/readInput';
 
 readInput()
   .then(prepareInput)
-  .then(EUs => {
-    console.log('EUs:', EUs);
-    for (const EU of EUs) {
-      // todo: all
-      const res = euroDiffusion(EU)
-      console.log('res:', res);
-    }
-  });
+  .then(EUs => EUs.map(euroDiffusion))
+  .then(prepareOutput)
+  .then(console.log);
 
 export {};
-
