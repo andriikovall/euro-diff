@@ -2,9 +2,9 @@ import {
   INITIAL_CITY_COINS_COUNT,
   MAX_X_COORDINATE,
   MAX_Y_COORDINATE,
-} from '../config';
-import { City, Country } from '../types';
-import { Input } from './readInput';
+} from '../../config';
+import { City, Country } from '../../types';
+import { Input } from '../readInput/readInput';
 
 export type EU = {
   matrix: City[][];

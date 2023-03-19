@@ -1,4 +1,3 @@
-import readline from 'readline';
 import {
   MAX_COUNTRY_NAME_LENGTH,
   MAX_NUMBER_OF_COUNTRIES,
@@ -7,32 +6,10 @@ import {
   MIN_NUMBER_OF_COUNTRIES,
   MIN_X_COORDINATE,
   MIN_Y_COORDINATE,
-} from '../config';
-import { Country } from '../types';
+} from '../../config';
+import { Input } from './readInput';
 
-export type Input = {
-  countries: Country[];
-}[];
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
-const getherUserInput = async (): Promise<string[]> => {
-  const lines: string[] = [];
-  return new Promise<string[]>(resolve => {
-    rl.addListener('line', line => {
-      lines.push(line);
-      if (line === '0') {
-        resolve(lines);
-        rl.close();
-      }
-    });
-  });
-};
-
-const parseInput = (lines: string[]): Input => {
+export const parseInput = (lines: string[]): Input => {
   const input: Input = [];
   let linesIndex = 0;
   while (true) {
@@ -90,9 +67,4 @@ const parseInput = (lines: string[]): Input => {
     input.push({ countries });
   }
   return input;
-};
-
-export const readInput = async (): Promise<Input> => {
-  const lines = await getherUserInput();
-  return parseInput(lines);
 };
