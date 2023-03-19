@@ -16,4 +16,5 @@ export type Country = {
   yl: number;
   xh: number;
   yh: number;
+  cities: City[];
 };

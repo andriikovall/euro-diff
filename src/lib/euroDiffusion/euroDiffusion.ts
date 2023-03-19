@@ -1,37 +1,28 @@
-import { City } from '../../types';
+import { City, Country } from '../../types';
 import { EU } from '../prepareInput';
+import { isCountryCompleted } from './isCountryCompleted';
 
 export type EuroDiffusionResult = {
   countries: { name: string; days: number }[];
 };
 
 export const euroDiffusion = (eu: EU): EuroDiffusionResult => {
-  let completionMap: Record<string, boolean>;
-
   const result: EuroDiffusionResult = {
     countries: eu.countries.map(c => ({
       name: c.name,
-      days: 0,
+      days: -1,
     })),
   };
 
   let days = 0;
   let done = false;
   do {
-    completionMap = eu.countries.reduce((acc, country) => {
-      acc[country.name] = true;
-      return acc;
-    }, {} as Record<string, boolean>);
-
     for (let i = 0; i < eu.matrix.length; i++) {
       const row = eu.matrix[i];
       for (let j = 0; j < row.length; j++) {
         const city = row[j];
-        if (!city.country) {
-          continue;
-        }
         const cityCoinsCountries = Object.keys(city.coins.count);
-        if (cityCoinsCountries.length === 0) {
+        if (!city.country || cityCoinsCountries.length === 0) {
           continue;
         }
         const neighbours = [
@@ -57,24 +48,15 @@ export const euroDiffusion = (eu: EU): EuroDiffusionResult => {
       }
     }
     for (const country of eu.countries) {
-      const countryCities: City[] = [];
-      for (let x = country.xl; x <= country.xh; x++) {
-        for (let y = country.yl; y <= country.yh; y++) {
-          countryCities.push(eu.matrix[x][y]);
-        }
-      }
-      const isCountryCompleted = countryCities.every(city => {
-        const cityCoinsCountries = Object.keys(city.coins.count);
-        return cityCoinsCountries.length === eu.countries.length;
-      });
-      completionMap[country.name] = isCountryCompleted;
+      const countryCompleted = isCountryCompleted(country, eu);
+      
       const countryResult = result.countries.find(c => c.name === country.name);
-      if (countryResult && isCountryCompleted) {
-        countryResult.days = countryResult.days || days;
+      if (countryResult && countryCompleted) {
+        countryResult.days = countryResult.days > -1 ? countryResult.days : days;
       }
     }
     days++;
-    done = Object.values(completionMap).every(Boolean);
+    done = result.countries.every(c => c.days >= 0);
     for (const row of eu.matrix) {
       for (const city of row) {
         for (const motif of Object.keys(city.coinsToReceive.count)) {
@@ -89,3 +71,5 @@ export const euroDiffusion = (eu: EU): EuroDiffusionResult => {
 
   return result;
 };
+
+

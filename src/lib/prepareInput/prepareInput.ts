@@ -29,17 +29,29 @@ export const prepareInput = (input: Input): EU[] => {
         country: '',
       }),
     );
-    countries.forEach(country => {
+    const countriesWithCities = countries.map(country => {
+      const cities: City[] = [];
       for (let x = country.xl; x <= country.xh; x++) {
         for (let y = country.yl; y <= country.yh; y++) {
-          matrix[x][y].coins.count[country.name] = INITIAL_CITY_COINS_COUNT;
-          matrix[x][y].country = country.name;
+          const city = matrix[x][y];
+          cities.push(city);
+        }
+      }
+      return { ...country, cities };
+    });
+
+    countriesWithCities.forEach(country => {
+      for (let x = country.xl; x <= country.xh; x++) {
+        for (let y = country.yl; y <= country.yh; y++) {
+          const city = matrix[x][y];
+          city.coins.count[country.name] = INITIAL_CITY_COINS_COUNT;
+          city.country = country.name;
         }
       }
     });
     return {
       matrix,
-      countries,
+      countries: countriesWithCities,
     };
   });
 

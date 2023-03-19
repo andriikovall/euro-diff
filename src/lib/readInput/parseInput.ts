@@ -24,7 +24,7 @@ export const parseInput = (lines: string[]): Input => {
       break;
     }
     linesIndex++;
-    const countries: Country[] = [];
+    const countriesWithNoCities: Input[number]['countries'] = [];
     for (let i = 0; i < numberOfCountries; i++) {
       const [name, xl, yl, xh, yh] = lines[linesIndex].split(' ');
       if (name.length > MAX_COUNTRY_NAME_LENGTH) {
@@ -57,7 +57,7 @@ export const parseInput = (lines: string[]): Input => {
           `Invalid y coordinate: ${ylParsed} or ${yhParsed}. Min is ${MIN_Y_COORDINATE} and max is ${MAX_Y_COORDINATE}`,
         );
       }
-      countries.push({
+      countriesWithNoCities.push({
         name,
         xl: Number(xl),
         yl: Number(yl),
@@ -65,7 +65,7 @@ export const parseInput = (lines: string[]): Input => {
         yh: Number(yh),
       });
     }
-    input.push({ countries });
+    input.push({ countries: countriesWithNoCities });
   }
   return input;
 };

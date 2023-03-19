@@ -3,7 +3,7 @@ import { getherUserInputLines } from './getherUserInputLines';
 import { parseInput } from './parseInput';
 
 export type Input = {
-  countries: Country[];
+  countries: Omit<Country, 'cities'>[];
 }[];
 
 export const readInput = async (): Promise<Input> => {
