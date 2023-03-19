@@ -1,4 +1,4 @@
-import { EuroDiffusionResult } from './euroDiffustion';
+import { EuroDiffusionResult } from './euroDiffusion';
 
 export const prepareOutput = (res: EuroDiffusionResult[]): string => {
   const resWithSortedCountries = res.map(({ countries }) => {

@@ -1,6 +1,5 @@
-import { INITIAL_CITY_COINS_COUNT } from '../config';
-import { City, Country } from '../types';
-import { EU } from './prepareInput';
+import { City } from '../../types';
+import { EU } from '../prepareInput';
 
 export type EuroDiffusionResult = {
   countries: { name: string; days: number }[];
