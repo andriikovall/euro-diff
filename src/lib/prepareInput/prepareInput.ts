@@ -21,7 +21,10 @@ export const prepareInput = (input: Input): EU[] => {
         x,
         y,
         coins: {
-          count: {},
+          count: countries.reduce((acc, country) => {
+            acc[country.name] = 0;
+            return acc;
+          }, {} as Record<string, number>),
         },
         coinsToReceive: {
           count: {},
@@ -34,20 +37,12 @@ export const prepareInput = (input: Input): EU[] => {
       for (let x = country.xl; x <= country.xh; x++) {
         for (let y = country.yl; y <= country.yh; y++) {
           const city = matrix[x][y];
+          city.coins.count[country.name] = INITIAL_CITY_COINS_COUNT;
+          city.country = country.name;
           cities.push(city);
         }
       }
       return { ...country, cities };
-    });
-
-    countriesWithCities.forEach(country => {
-      for (let x = country.xl; x <= country.xh; x++) {
-        for (let y = country.yl; y <= country.yh; y++) {
-          const city = matrix[x][y];
-          city.coins.count[country.name] = INITIAL_CITY_COINS_COUNT;
-          city.country = country.name;
-        }
-      }
     });
     return {
       matrix,

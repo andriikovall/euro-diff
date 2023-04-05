@@ -11,7 +11,7 @@ export const getUpdatedCountries = (
   days: number,
 ): CountryWithCompletionDays[] => {
   return result.countries.map(c => {
-    if (isCountryCompleted(c, eu)) {
+    if (isCountryCompleted(c)) {
       return {
         ...c,
         days: c.days > -1 ? c.days : days,

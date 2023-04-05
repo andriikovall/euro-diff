@@ -7,7 +7,6 @@ import {
   MIN_X_COORDINATE,
   MIN_Y_COORDINATE,
 } from '../../config';
-import { Country } from '../../types';
 import { Input } from './readInput';
 
 export const parseInput = (lines: string[]): Input => {
@@ -59,10 +58,10 @@ export const parseInput = (lines: string[]): Input => {
       }
       countriesWithNoCities.push({
         name,
-        xl: Number(xl),
-        yl: Number(yl),
-        xh: Number(xh),
-        yh: Number(yh),
+        xl: xlParsed,
+        yl: ylParsed,
+        xh: xhParsed,
+        yh: yhParsed,
       });
     }
     input.push({ countries: countriesWithNoCities });
