@@ -26,7 +26,7 @@ export const prepareInput = (input: Input): EU[] => {
             return acc;
           }, {} as Record<string, number>),
         },
-        coinsToReceive: {
+        draftCoins: {
           count: {},
         },
         country: '',
