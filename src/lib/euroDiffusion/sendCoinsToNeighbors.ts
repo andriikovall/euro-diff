@@ -9,11 +9,11 @@ export const sendCoinsToNeighbors = (city: City, neighbors: City[]) => {
       continue;
     }
     neighbors.forEach(neighbour => {
-      neighbour.coinsToReceive.count[motif] =
-        safeGetNumber(neighbour.coinsToReceive.count[motif]) +
+      neighbour.draftCoins.count[motif] =
+        safeGetNumber(neighbour.draftCoins.count[motif]) +
         coinsRepresentativePortion;
 
-      city.coins.count[motif] -= coinsRepresentativePortion;
+      city.draftCoins.count[motif] = safeGetNumber(city.draftCoins.count[motif]) - coinsRepresentativePortion;
     });
   }
 };
