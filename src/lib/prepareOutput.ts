@@ -3,7 +3,6 @@ import { EuroDiffusionResult } from './euroDiffusion';
 export const prepareOutput = (res: EuroDiffusionResult[]): string => {
   const resWithSortedCountries = res.map(({ countries }) => {
     return [...countries]
-      .map(({ name, days }) => ({ name, days }))
       .sort((a, b) => a.days - b.days || a.name.localeCompare(b.name));
   });
 
