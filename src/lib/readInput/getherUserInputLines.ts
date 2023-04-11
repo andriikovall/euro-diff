@@ -5,9 +5,7 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-const TERMINATOR_SIGN = '0';
-
-export const getherUserInputLines = async (terminator = TERMINATOR_SIGN): Promise<string[]> => {
+export const getherUserInputLines = async (terminator = '0'): Promise<string[]> => {
   const lines: string[] = [];
   return new Promise<string[]>(resolve => {
     rl.addListener('line', line => {
